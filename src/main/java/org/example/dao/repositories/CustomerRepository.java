@@ -45,16 +45,12 @@ public class CustomerRepository {
         try(Connection connection = DatabaseConnection.getDatabaseConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from Customers where id = " + id);
         ResultSet resultSet = preparedStatement.executeQuery()){
-            if (resultSet.next()) {
-                List<Customer> customerList = new ArrayList<>();
-                while(resultSet.next()) {
-                    Customer customer = buildCustomerFromResultSet(resultSet);
-                    customerList.add(customer);
-                }
-                return customerList.getFirst();
-            } else {
-                System.out.println("Customer not found!");
+            List<Customer> customerList = new ArrayList<>();
+            while(resultSet.next()) {
+                Customer customer = buildCustomerFromResultSet(resultSet);
+                customerList.add(customer);
             }
+                return customerList.getFirst();
         } catch (SQLException e) {
             System.out.println("Exception occurred: " + e.getMessage());
         }
@@ -62,20 +58,14 @@ public class CustomerRepository {
     }
 
     public void updateCustomer(Long id, Customer customer) {
-        try(Connection connection = DatabaseConnection.getDatabaseConnection();
-        PreparedStatement preparedStatementCheck = connection.prepareStatement("select * from Customers where id = " + id);
-        ResultSet resultSet = preparedStatementCheck.executeQuery()) {
-            if (resultSet.next()) {
-                PreparedStatement preparedStatement = connection.prepareStatement(
-                        "update Customers set name = "+"'"+customer.getName()+"'"+
-                                ", surname = "+"'"+customer.getSurname()+"'"+", father_name = "+"'"
-                                +customer.getFatherName()+"'"+", birth_date = "+
-                                "'"+customer.getBirthDate()+"'"+", is_active = "+"'"+customer.getIsActive()+"'"+
-                                ", updated_at = "+"'"+Date.valueOf(LocalDate.now())+"'"+" where id = "+id);
+        try(Connection connection = DatabaseConnection.getDatabaseConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update Customers set name = "+"'"+customer.getName()+"'"+
+                            ", surname = "+"'"+customer.getSurname()+"'"+", father_name = "+"'"
+                            +customer.getFatherName()+"'"+", birth_date = "+
+                            "'"+customer.getBirthDate()+"'"+", is_active = "+"'"+customer.getIsActive()+"'"+
+                            ", updated_at = "+"'"+Date.valueOf(LocalDate.now())+"'"+" where id = "+id);
                 preparedStatement.executeUpdate();
-            } else {
-                System.out.println("Customer not found!");
-            }
         } catch (SQLException e) {
             System.out.println("Exception occurred: " + e.getMessage());
         }
@@ -83,16 +73,10 @@ public class CustomerRepository {
     }
 
     public void removeCustomer(Long id) {
-        try(Connection connection = DatabaseConnection.getDatabaseConnection();
-        PreparedStatement preparedStatementCheck = connection.prepareStatement("select * from Customers where id = " + id);
-        ResultSet resultSet = preparedStatementCheck.executeQuery()) {
-            if (resultSet.next()) {
-                PreparedStatement preparedStatement = connection.prepareStatement("update Customers set is_active = "+false+
-                        " where id = "+id);
-                preparedStatement.executeUpdate();
-            } else {
-                System.out.println("Customer not found!");
-            }
+        try(Connection connection = DatabaseConnection.getDatabaseConnection();) {
+            PreparedStatement preparedStatement = connection.prepareStatement("update Customers set is_active = "+false+
+                    " where id = "+id);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Exception occurred: " + e.getMessage());
         }

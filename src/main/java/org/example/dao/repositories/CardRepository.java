@@ -29,17 +29,12 @@ public class CardRepository {
         PreparedStatement preparedStatement = connection.prepareStatement(
                 "select * from Cards where card_number = "+"'"+cardNumber+"'");
             ResultSet resultSet = preparedStatement.executeQuery()) {
-            if (resultSet.next()) {
                 List<Card> cardList = new ArrayList<>();
                 while (resultSet.next()) {
                     Card card = buildCardFromResultSet(resultSet);
                     cardList.add(card);
                 }
                 return cardList.getFirst();
-            } else {
-                System.out.println("Card cannot found!");
-            }
-
         } catch (SQLException e) {
             System.out.println("Exception occurred: " + e.getMessage());
         }
@@ -47,19 +42,12 @@ public class CardRepository {
     }
 
     public void updateCard(Card card) {
-        try(Connection connection = DatabaseConnection.getDatabaseConnection();
-        PreparedStatement preparedStatementCheck = connection.prepareStatement(
-                "select * from Cards where card_number = " +"'"+card.getCardNumber()+"'");
-        ResultSet resultSet = preparedStatementCheck.executeQuery()) {
-            if (resultSet.next()) {
+        try(Connection connection = DatabaseConnection.getDatabaseConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement(
                         "update Cards set customer_id = "+"'"+card.getCustomerID()+"'"+", currency = "+"'"+card.getCurrency()+
                                 "'"+", amount = "+card.getAmount()+", updated_at = "+"'"+Date.valueOf(LocalDate.now())+"'"+
                                 " where card_number = "+"'"+card.getCardNumber()+"'");
                 preparedStatement.executeUpdate();
-            } else {
-                System.out.println("Card cannot found!");
-            }
         } catch (SQLException e) {
             System.out.println("Exception occurred: " + e.getMessage());
         }
@@ -67,17 +55,10 @@ public class CardRepository {
     }
 
     public void updateCardStatus(String cardNumber, Boolean isActive) {
-        try(Connection connection = DatabaseConnection.getDatabaseConnection();
-        PreparedStatement preparedStatementCheck = connection.prepareStatement(
-                "select * from Cards where card_number = "+"'"+cardNumber+"'");
-        ResultSet resultSet = preparedStatementCheck.executeQuery()) {
-            if (resultSet.next()) {
+        try(Connection connection = DatabaseConnection.getDatabaseConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement(
                         "update Cards set is_active = " + isActive + " where card_number = "+"'"+cardNumber+"'");
                 preparedStatement.executeUpdate();
-            } else {
-                System.out.println("Card cannot found!");
-            }
         } catch (SQLException e) {
             System.out.println("Exception occurred: " + e.getMessage());
         }
@@ -111,16 +92,12 @@ public class CardRepository {
         PreparedStatement preparedStatement = connection.prepareStatement(
                 "select * from Cards where customer_id = "+"'"+customerID+"'");
         ResultSet resultSet = preparedStatement.executeQuery()) {
-            if (resultSet.next()) {
                 List<Card> cardList = new ArrayList<>();
                 while (resultSet.next()) {
                     Card card = buildCardFromResultSet(resultSet);
                     cardList.add(card);
                 }
                 return cardList;
-            } else {
-                System.out.println("Card cannot found!");
-            }
         } catch (SQLException e) {
             System.out.println("Exception occurred: " + e.getMessage());
         }

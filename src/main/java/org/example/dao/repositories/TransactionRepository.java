@@ -17,16 +17,12 @@ public class TransactionRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "select * from Transactions where id = "+ id);
             ResultSet resultSet = preparedStatement.executeQuery()) {
-            if (resultSet.next()) {
                 List<Transaction> transactionList = new ArrayList<>();
                 while (resultSet.next()) {
                     Transaction transaction = buildTransactionFromResultSet(resultSet);
                     transactionList.add(transaction);
                 }
                 return transactionList;
-            } else {
-                System.out.println("Transaction cannot found!");
-            }
         } catch (SQLException e) {
             System.out.println("Exception occurred: " + e.getMessage());
         }
@@ -38,16 +34,12 @@ public class TransactionRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "select * from Transactions where customer_id_from = "+ customerIdFrom);
             ResultSet resultSet = preparedStatement.executeQuery()) {
-            if (resultSet.next()) {
                 List<Transaction> transactionList = new ArrayList<>();
                 while (resultSet.next()) {
                     Transaction transaction = buildTransactionFromResultSet(resultSet);
                     transactionList.add(transaction);
                 }
                 return transactionList;
-            } else {
-                System.out.println("Transactions cannot found");
-            }
         } catch (SQLException e) {
             System.out.println("Exception occurred: " + e.getMessage());
         }
