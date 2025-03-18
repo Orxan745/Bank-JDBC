@@ -1,4 +1,4 @@
-package org.example.dao.services;
+package org.example.services;
 
 import org.example.dao.entities.Card;
 import org.example.dao.entities.Customer;

@@ -1,6 +1,6 @@
 package org.example.strategies;
 
-import org.example.dao.services.CustomerService;
+import org.example.services.CustomerService;
 
 public class SearchCustomer implements MenuStrategy{
     private final CustomerService customerService = new CustomerService();
